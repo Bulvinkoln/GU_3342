@@ -1,3 +1,12 @@
 Алексу сделать с проектом:
 
 Понять и простить.
+
+cit clone https://github.com/AxelMaksel/GU_3342.git
+cd .\GU_3342\
+git branch mywork  
+git checkout mywork
+git push -u oridin mywork
+git add .
+git commit -m "new"
+git push -u oridin mywork
