@@ -41,32 +41,21 @@ b8b0618cf6fab (Cheng Renquan  2009-05-26 16:03:07 +0800 70)   KBUILD_VERBOSE = $
 
 Другая отличная вещь в Git — это то, что он не отслеживает явно переименования файлов (пользователю не нужно явно указывать какой файл в какой был переименован). Он сохраняет снимки и уже после выполнения самого переименования неявно попытается выяснить, что было переименовано. Одна из интересных возможностей, вытекающих из этого — это то, что вы также можете попросить Git выявить перемещения кода всех других видов. Если передать опцию -C команде git blame, Git проанализирует аннотируемый файл и пытается выяснить откуда изначально появились фрагменты кода, если они, конечно же, были откуда-то скопированы. Например, предположим при реорганизации кода в файле GITServerHandler.m вы разнесли его по нескольким файлам, один из которых GITPackUpload.m. Вызывая git blame с опцией -C для файла GITPackUpload.m, вы можете увидеть откуда изначально появились разные фрагменты этого файла.
 
-$ git blame -C -L 141,153 GITPackUpload.m
-
-f344f58d GITServerHandler.m (Scott 2009-01-04 141)
-
-f344f58d GITServerHandler.m (Scott 2009-01-04 142) - (void) 
-gatherObjectShasFromC
-
-f344f58d GITServerHandler.m (Scott 2009-01-04 143) {
-70befddd GITServerHandler.m (Scott 2009-03-22 144)         //NSLog(@"GATHER COMMI
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 145)
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 146)         NSString *parentSha;
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 147)         GITCommit *commit = [g
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 148)
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 149)         //NSLog(@"GATHER COMMI
-
-ad11ac80 GITPackUpload.m    (Scott 2009-03-24 150)
-
-56ef2caf GITServerHandler.m (Scott 2009-01-05 151)         if(commit) {
-56ef2caf GITServerHandler.m (Scott 2009-01-05 152)                 [refDict setOb
-
-56ef2caf GITServerHandler.m (Scott 2009-01-05 153)
+        $ git blame -C -L 141,153 GITPackUpload.m
+        f344f58d GITServerHandler.m (Scott 2009-01-04 141)
+        f344f58d GITServerHandler.m (Scott 2009-01-04 142) - (void) 
+        gatherObjectShasFromC
+        f344f58d GITServerHandler.m (Scott 2009-01-04 143) {
+        70befddd GITServerHandler.m (Scott 2009-03-22 144)         //NSLog(@"GATHER COMMI
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 145)
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 146)         NSString *parentSha;
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 147)         GITCommit *commit = [g
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 148)
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 149)         //NSLog(@"GATHER COMMI
+        ad11ac80 GITPackUpload.m    (Scott 2009-03-24 150)
+        56ef2caf GITServerHandler.m (Scott 2009-01-05 151)         if(commit) {
+        56ef2caf GITServerHandler.m (Scott 2009-01-05 152)                 [refDict setOb
+        56ef2caf GITServerHandler.m (Scott 2009-01-05 153)
 
 Это, действительно, полезно. Обычно вы получаете в качестве изначального коммит, в котором вы скопировали код, так как это первый коммит, в котором вы обращаетесь к этим строкам в этом файле. Но в данном случае Git сообщает вам первый коммит, в котором эти строки были написаны, даже если это было сделано в другом файле.
 
